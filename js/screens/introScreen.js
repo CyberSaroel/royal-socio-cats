@@ -267,9 +267,9 @@ export function showIntroScreen(root) {
   hero.className = "intro-hero";
   hero.appendChild(introImg);
   hero.appendChild(titleImage);
+  hero.appendChild(controls);
 
   overlay.appendChild(hero);
-  overlay.appendChild(controls);
   root.appendChild(overlay);
 
   NavigationService.saveCurrentRender(() => showIntroScreen(root));
