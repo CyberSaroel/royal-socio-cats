@@ -10,19 +10,15 @@ export function showIntroScreen(root) {
   const overlay = document.createElement("div");
   overlay.id = "intro-screen";
 
-  const video = document.createElement("video");
-  video.src = "assets/intro/intro.mp4";
-  video.alt = "Соционические коты";
-  video.className = "intro-image";
-  video.autoplay = true;
-  video.loop = true;
-  video.muted = true;
-  video.playsInline = true;
+  const introImg = document.createElement("img");
+  introImg.src = "assets/intro/intro.png";
+  introImg.alt = "Соционические коты";
+  introImg.className = "intro-image";
 
-  // Заголовок "ВОЗРОЖДЕНИЕ КОТОПАРКА"
+  // Заголовок "СОБЕРИ ВСЕХ КОРОЛЕЙ"
   const titleImage = document.createElement("img");
   titleImage.src = "assets/intro/title.png";
-  titleImage.alt = "ВОЗРОЖДЕНИЕ КОТОПАРКА";
+  titleImage.alt = "СОБЕРИ ВСЕХ КОРОЛЕЙ";
   titleImage.className = "intro-title-image";
 
   const startBtn = document.createElement("button");
@@ -269,7 +265,7 @@ export function showIntroScreen(root) {
 
   const hero = document.createElement("div");
   hero.className = "intro-hero";
-  hero.appendChild(video);
+  hero.appendChild(introImg);
   hero.appendChild(titleImage);
 
   overlay.appendChild(hero);
