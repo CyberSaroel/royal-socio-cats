@@ -11,11 +11,11 @@ applyTheme(getSelectedTheme());
 // Save current version
 saveVersion();
 
-// Add version label
+// Add version label to body (persists across screen changes)
 const versionLabel = document.createElement("div");
 versionLabel.className = "version-label";
 versionLabel.textContent = `v${VERSION}`;
-root.appendChild(versionLabel);
+document.body.appendChild(versionLabel);
 
 // Initialize NavigationService
 NavigationService.init(root);
