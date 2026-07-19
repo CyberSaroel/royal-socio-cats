@@ -132,9 +132,13 @@ export async function showGameScreen(root, levelId) {
   const bar = document.createElement("div");
   bar.className = "topbar";
 
+  // Top row: nav elements
+  const topRow = document.createElement("div");
+  topRow.className = "topbar-row";
+
   const title = document.createElement("span");
   title.className = "topbar-title";
-  title.textContent = level.name || ("Уровень " + level.id);
+  title.textContent = "Уровень " + level.id; // Always "Уровень N"
 
   const buttonsWrapper = document.createElement("div");
   buttonsWrapper.className = "topbar-buttons";
@@ -178,15 +182,27 @@ export async function showGameScreen(root, levelId) {
     buttonsWrapper.appendChild(navButtons);
     buttonsWrapper.appendChild(leave);
 
-    bar.appendChild(title);
-    bar.appendChild(buttonsWrapper);
+    topRow.appendChild(title);
+    topRow.appendChild(buttonsWrapper);
   } else {
-    // Desktop layout - new order: prev, title, next, leave
-    bar.appendChild(prevBtn);
-    bar.appendChild(title);
-    bar.appendChild(nextBtn);
-    bar.appendChild(leave);
+    // Desktop layout - prev, title, next, leave in one row
+    topRow.appendChild(prevBtn);
+    topRow.appendChild(title);
+    topRow.appendChild(nextBtn);
+    topRow.appendChild(leave);
   }
+
+  bar.appendChild(topRow);
+
+  // Add subtitle if needed
+  const defaultLevelName = "Уровень " + level.id;
+  if (level.name && level.name !== defaultLevelName) {
+    const subtitle = document.createElement("div");
+    subtitle.className = "topbar-subtitle";
+    subtitle.textContent = level.name;
+    bar.appendChild(subtitle);
+  }
+
   root.appendChild(bar);
 
   const stage = document.createElement("div");

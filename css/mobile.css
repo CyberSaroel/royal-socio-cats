@@ -108,6 +108,14 @@ button {
     flex-shrink: 0;
   }
 
+  .topbar-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    justify-content: center;
+    width: 100%;
+  }
+
   .topbar-buttons {
     display: flex;
     flex-direction: column;
@@ -132,6 +140,10 @@ button {
     line-height: 1.35;
     padding: 0 3px;
     text-align: center;
+  }
+
+  .topbar-subtitle {
+    font-size: 12px;
   }
 
   .topbar-prev,
