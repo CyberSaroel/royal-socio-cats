@@ -685,3 +685,18 @@ button {
     font-size: 12px !important;
   }
 }
+
+/* Version label for mobile */
+@media (max-width: 768px) {
+  .version-label {
+    bottom: max(6px, env(safe-area-inset-bottom));
+    right: max(8px, env(safe-area-inset-right));
+    /* If mobile audio bar is present, move to left to avoid overlap */
+    left: auto;
+  }
+  
+  body:has(.mobile-audio-bar) .version-label {
+    right: auto;
+    left: max(8px, env(safe-area-inset-left));
+  }
+}
