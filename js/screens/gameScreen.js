@@ -422,10 +422,8 @@ export async function showGameScreen(root, levelId) {
           <div class="col-6 col-sm-4 col-md-3 col-lg-2"><div class="stat-item">🎯 Ходы: ${remainingMovesHtml}|${movesMade}</div></div>
           <div class="col-6 col-sm-4 col-md-3 col-lg-2"><div class="stat-item">⭐ Макс. довольных: ${maxHappyCats}</div></div>
           <div class="col-6 col-sm-4 col-md-3 col-lg-2"><div class="stat-item">👑 Короли: ${kingsCount}</div></div>
+          <div class="col-6 col-sm-4 col-md-3 col-lg-2"><button class="${rocketBtnClass}" id="rocket-btn" ${!canUseRocket ? 'disabled' : ''}>🚀 Ракеты: ${rocketsCount}</button></div>
         </div>
-        <div class="row g-2 mt-1"><div class="col-12">
-          <button class="${rocketBtnClass}" id="rocket-btn" ${!canUseRocket ? 'disabled' : ''}>🚀 Ракеты: ${rocketsCount}</button>
-        </div></div>
       </div>
     ` : `
       <div class="stat-item">🎯 Ходы: <span style="${movesColor}">осталось</span> | сделано (${remainingMovesHtml}/${movesMade})</div>
