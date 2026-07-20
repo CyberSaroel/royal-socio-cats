@@ -463,6 +463,15 @@ button {
     grid-template-columns: none;
   }
 
+  /* Кнопка ракеты: наша специфичная высота побеждает глобальный button { min-height: 44px } */
+  .rocket-btn {
+    width: 100%;
+    min-height: 40px;
+    font-size: 12px;
+  }
+
+  .rocket-btn-disabled { opacity: 0.5; cursor: default; }
+
   .game-stage .stats .stat-item {
     padding: 6px 8px;
     font-size: 11px;

@@ -49,7 +49,8 @@ export async function showGameScreen(root, levelId) {
     }
     return kings;
   }
-  let previousKings = getCurrentKings();
+  let startingKings = getCurrentKings();
+  let previousKings = new Set(startingKings);
   
   root.innerHTML = "";
   root.className = "game-screen";
@@ -305,7 +306,11 @@ export async function showGameScreen(root, levelId) {
     // Потерявшиеся короли
     for (const key of previousKings) {
       if (!currentKings.has(key)) {
-        onKingLost();
+        if (startingKings.has(key)) {
+          startingKings.delete(key); // стартовый король — игрока не касается
+        } else {
+          onKingLost(); // списываем только заработанных
+        }
       }
     }
     previousKings = currentKings;
@@ -403,7 +408,7 @@ export async function showGameScreen(root, levelId) {
     // Красным число оставшихся ходов и слово "осталось", когда их меньше 20
     const movesColor = remainingMoves < 20 ? "color: #ff3333; font-weight: bold;" : "";
     const remainingMovesHtml = `<span style="${movesColor}">${remainingMoves}</span>`;
-    const kingsCount = getKingsThisLevel();
+    const kingsCount = won ? kingsThisLevelAtWin : getKingsThisLevel();
     const rocketsCount = getRockets();
     const canUseRocket = !rocketBtnDisabled && rocketsCount > 0 && !won && !impeached;
     const rocketBtnClass = `rocket-btn ${!canUseRocket ? 'rocket-btn-disabled' : ''}`;
@@ -417,8 +422,10 @@ export async function showGameScreen(root, levelId) {
           <div class="col-6 col-sm-4 col-md-3 col-lg-2"><div class="stat-item">🎯 Ходы: ${remainingMovesHtml}|${movesMade}</div></div>
           <div class="col-6 col-sm-4 col-md-3 col-lg-2"><div class="stat-item">⭐ Макс. довольных: ${maxHappyCats}</div></div>
           <div class="col-6 col-sm-4 col-md-3 col-lg-2"><div class="stat-item">👑 Короли: ${kingsCount}</div></div>
-          <div class="col-6 col-sm-4 col-md-3 col-lg-2"><button class="${rocketBtnClass}" id="rocket-btn" ${!canUseRocket ? 'disabled' : ''}>🚀 Ракеты: ${rocketsCount}</button></div>
         </div>
+        <div class="row g-2 mt-1"><div class="col-12">
+          <button class="${rocketBtnClass}" id="rocket-btn" ${!canUseRocket ? 'disabled' : ''}>🚀 Ракеты: ${rocketsCount}</button>
+        </div></div>
       </div>
     ` : `
       <div class="stat-item">🎯 Ходы: <span style="${movesColor}">осталось</span> | сделано (${remainingMovesHtml}/${movesMade})</div>
