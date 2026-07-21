@@ -305,23 +305,22 @@ function fireConfetti() {
   } else {
     canvas.remove();
   }
-}
 
-animate();
+  animate();
 
-const overlay = document.getElementById("win-screen");
-if (overlay) {
-  const observer = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-      if (mutation.removedNodes.length > 0) {
-        cancelAnimationFrame(animationId);
-        canvas.remove();
-        observer.disconnect();
-      }
+  const overlay = document.getElementById("win-screen");
+  if (overlay) {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.removedNodes.length > 0) {
+          cancelAnimationFrame(animationId);
+          canvas.remove();
+          observer.disconnect();
+        }
+      });
     });
-  });
-  observer.observe(overlay.parentNode, { childList: true });
-}
+    observer.observe(overlay.parentNode, { childList: true });
+  }
 }
 
 function fireKingRain() {

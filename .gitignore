@@ -1,2 +1,5 @@
 Запустить игру.exe
 *.exe
+build/
+dist/
+*.spec
