@@ -49,8 +49,9 @@ export async function showGameScreen(root, levelId) {
     }
     return kings;
   }
-  let startingKings = getCurrentKings();
-  let previousKings = new Set(startingKings);
+  let previousKings = getCurrentKings();
+  // Стартовые короли зачисляются игроку сразу при входе на уровень
+  for (const _ of previousKings) onKingCreated();
   
   root.innerHTML = "";
   root.className = "game-screen";
@@ -306,11 +307,7 @@ export async function showGameScreen(root, levelId) {
     // Потерявшиеся короли
     for (const key of previousKings) {
       if (!currentKings.has(key)) {
-        if (startingKings.has(key)) {
-          startingKings.delete(key); // стартовый король — игрока не касается
-        } else {
-          onKingLost(); // списываем только заработанных
-        }
+        onKingLost();
       }
     }
     previousKings = currentKings;
