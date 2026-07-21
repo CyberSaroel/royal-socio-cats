@@ -47,6 +47,21 @@ function buildTimeDetail(currentMs, record) {
   return "";
 }
 
+function buildKingsDetail(current, record) {
+  const { isNewRecord, improvement, previousBest } = record;
+
+  if (isNewRecord && previousBest === undefined) {
+    return "Первое прохождение — рекорд установлен";
+  }
+  if (isNewRecord && previousBest !== undefined) {
+    return `Было ${previousBest} → стало ${current} (+${improvement})`;
+  }
+  if (previousBest !== undefined) {
+    return `Ваш рекорд: ${previousBest}`;
+  }
+  return "";
+}
+
 function buildStatRow({ label, value, detail, isNewRecord }) {
   const row = document.createElement("div");
   row.className = "win-stat-row";
@@ -83,7 +98,7 @@ function buildStatRow({ label, value, detail, isNewRecord }) {
   return row;
 }
 
-function buildWinStats(moveCount, timeMs, moveRecord, timeRecord, kingsThisLevel, rocketsTotal) {
+function buildWinStats(moveCount, timeMs, moveRecord, timeRecord, kingsThisLevel, kingsRecord, rocketsTotal) {
   const stats = document.createElement("div");
   stats.className = "win-stats";
 
@@ -102,6 +117,15 @@ function buildWinStats(moveCount, timeMs, moveRecord, timeRecord, kingsThisLevel
   }));
 
   if (kingsThisLevel !== undefined) {
+    stats.appendChild(buildStatRow({
+      label: "Короли",
+      value: String(kingsThisLevel),
+      detail: buildKingsDetail(kingsThisLevel, kingsRecord),
+      isNewRecord: kingsRecord ? kingsRecord.isNewRecord : false
+    }));
+  }
+
+  if (rocketsTotal !== undefined) {
     stats.appendChild(buildStatRow({
       label: "Ракет получено",
       value: `+${kingsThisLevel}`
@@ -124,6 +148,7 @@ export function showWinScreen(root, level, {
   moveRecord,
   timeRecord,
   kingsThisLevel,
+  kingsRecord,
   kingsTotal,
   rocketsTotal,
   onNext,
@@ -140,7 +165,7 @@ export function showWinScreen(root, level, {
   title.className = "win-title";
   title.textContent = "🎉 Все коты зелёные! Уровень пройден";
 
-  const stats = buildWinStats(moveCount, timeMs, moveRecord, timeRecord, kingsThisLevel, rocketsTotal);
+  const stats = buildWinStats(moveCount, timeMs, moveRecord, timeRecord, kingsThisLevel, kingsRecord, rocketsTotal);
 
   const btns = document.createElement("div");
   btns.style.display = "flex";
@@ -185,6 +210,11 @@ export function showWinScreen(root, level, {
 
   audioManager.playSoundEffect(getVictorySoundPath());
   fireConfetti();
+  
+  // Fire king rain if new kings record
+  if (kingsRecord && kingsRecord.isNewRecord) {
+    fireKingRain();
+  }
 
   // Stop victory sound when clicking buttons
   next.addEventListener("click", () => {
@@ -270,26 +300,73 @@ function fireConfetti() {
       }
     }
 
-    if (particles.length > 0) {
-      animationId = requestAnimationFrame(animate);
-    } else {
-      canvas.remove();
-    }
+  if (particles.length > 0) {
+    animationId = requestAnimationFrame(animate);
+  } else {
+    canvas.remove();
+  }
+}
+
+animate();
+
+const overlay = document.getElementById("win-screen");
+if (overlay) {
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.removedNodes.length > 0) {
+        cancelAnimationFrame(animationId);
+        canvas.remove();
+        observer.disconnect();
+      }
+    });
+  });
+  observer.observe(overlay.parentNode, { childList: true });
+}
+}
+
+function fireKingRain() {
+  const container = document.createElement("div");
+  container.className = "king-rain";
+  document.body.appendChild(container);
+
+  const count = 8 + Math.floor(Math.random() * 5); // 8-12 items
+  const stats = document.querySelector(".win-stats");
+  const startX = stats ? stats.getBoundingClientRect().left : window.innerWidth / 2;
+  const endX = stats ? stats.getBoundingClientRect().right : window.innerWidth;
+
+  for (let i = 0; i < count; i++) {
+    const item = document.createElement("div");
+    item.className = "king-rain-item";
+    item.textContent = "👑";
+    const left = startX + (Math.random() * (endX - startX));
+    const delay = Math.random() * 0.5;
+    const duration = 1.2 + Math.random() * 0.6; // 1.2-1.8s
+    item.style.left = left + "px";
+    item.style.top = (-30 - Math.random() * 30) + "px";
+    item.style.animationDelay = delay + "s";
+    item.style.animationDuration = duration + "s";
+    container.appendChild(item);
   }
 
-  animate();
-
-  const overlay = document.getElementById("win-screen");
-  if (overlay) {
+  // Clean up when animation ends
+  const cleanup = () => {
+    container.remove();
+  };
+  
+  // Use the longest possible animation time
+  setTimeout(cleanup, 2500);
+  
+  // Also clean up when win screen is removed
+  const winScreen = document.getElementById("win-screen");
+  if (winScreen) {
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.removedNodes.length > 0) {
-          cancelAnimationFrame(animationId);
-          canvas.remove();
+          cleanup();
           observer.disconnect();
         }
       });
     });
-    observer.observe(overlay.parentNode, { childList: true });
+    observer.observe(winScreen.parentNode, { childList: true });
   }
 }

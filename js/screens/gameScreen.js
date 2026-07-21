@@ -2,7 +2,7 @@ import { Game } from "../core/game.js";
 import { renderBoard } from "../core/renderer.js";
 import { fetchLevel } from "../levels/levelLoader.js";
 import { markCompleted } from "../levels/levelProgress.js";
-import { saveLevelRecord, saveLevelTimeRecord } from "../levels/levelRecords.js";
+import { saveLevelRecord, saveLevelTimeRecord, saveLevelKingsRecord } from "../levels/levelRecords.js";
 import { LevelTimer, LevelCountdown, formatTime, LEVEL_REMAINING_MOVES_INITIAL } from "../core/levelTimer.js";
 import { showWinScreen } from "./winScreen.js";
 import { showImpeachmentScreen } from "./impeachmentScreen.js";
@@ -529,12 +529,14 @@ export async function showGameScreen(root, levelId) {
       markCompleted(level.id);
       const moveRecord = saveLevelRecord(level.id, game.getMoveCount());
       const timeRecord = saveLevelTimeRecord(level.id, timeMs);
+      const kingsRecord = saveLevelKingsRecord(level.id, kingsThisLevelAtWin);
       showWinScreen(root, level, {
         moveCount: game.getMoveCount(),
         timeMs,
         moveRecord,
         timeRecord,
         kingsThisLevel: kingsThisLevelAtWin,
+        kingsRecord,
         kingsTotal: getKingsTotal(),
         rocketsTotal: getRockets(),
         onNext: () => {

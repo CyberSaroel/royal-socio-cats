@@ -1,8 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
-const versionFile = path.join(__dirname, 'js', 'core', 'version.js');
-const indexFile = path.join(__dirname, 'index.html');
+const versionFile = path.join(__dirname, '..', 'js', 'core', 'version.js');
+const indexFile = path.join(__dirname, '..', 'index.html');
 
 if (process.argv.length < 3) {
   console.error('Usage: node tools/bumpVersion.js <version>');

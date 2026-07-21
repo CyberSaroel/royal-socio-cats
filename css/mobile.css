@@ -728,3 +728,10 @@ button {
     left: max(8px, env(safe-area-inset-left));
   }
 }
+
+/* King rain animation for mobile */
+@media (max-width: 768px) {
+  .king-rain-item {
+    font-size: 20px;
+  }
+}
