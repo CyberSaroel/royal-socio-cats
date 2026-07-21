@@ -305,6 +305,7 @@ function fireConfetti() {
   } else {
     canvas.remove();
   }
+  }
 
   animate();
 
