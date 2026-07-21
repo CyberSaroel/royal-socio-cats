@@ -1,5 +1,3 @@
-Запустить игру.exe
+Запустить игру Python.exe
+Запустить игру GO.exe
 *.exe
-build/
-dist/
-*.spec
