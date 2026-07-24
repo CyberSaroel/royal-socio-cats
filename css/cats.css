@@ -290,3 +290,74 @@
     filter: drop-shadow(8px 5px 12px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 10px #ffd700) drop-shadow(0 0 20px rgba(255, 215, 0, 0.6));
   }
 }
+
+/* ===== Супер-анимации котов ===== */
+
+/* Плавное появление кота при каждой перерисовке поля */
+@keyframes catAppear {
+  from { opacity: 0.3; transform: scale(0.9); }
+  to   { opacity: 1;   transform: scale(1); }
+}
+#board .cell[data-mood] {
+  animation: catAppear 0.25s ease-out;
+}
+
+/* Довольные коты (настроение 1..6) — мягко покачиваются */
+@keyframes catHappyBob {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25%      { transform: translateY(-3px) rotate(-3deg); }
+  75%      { transform: translateY(-3px) rotate(3deg); }
+}
+#board .cell[data-mood="1"] .cat,
+#board .cell[data-mood="2"] .cat,
+#board .cell[data-mood="3"] .cat,
+#board .cell[data-mood="4"] .cat,
+#board .cell[data-mood="5"] .cat,
+#board .cell[data-mood="6"] .cat {
+  animation: catHappyBob 2.2s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+/* Недовольные коты (настроение 0 и ниже) — грустно вздыхают */
+@keyframes catSadSigh {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%      { transform: translateY(2px) scale(0.97); }
+}
+#board .cell[data-mood="0"] .cat,
+#board .cell[data-mood="-1"] .cat,
+#board .cell[data-mood="-2"] .cat,
+#board .cell[data-mood="-3"] .cat,
+#board .cell[data-mood="-4"] .cat,
+#board .cell[data-mood="-5"] .cat,
+#board .cell[data-mood="-6"] .cat {
+  animation: catSadSigh 3s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+/* Пульсация выбранной клетки */
+@keyframes cellSelectPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.6); }
+  50%      { box-shadow: 0 0 12px 4px rgba(255, 215, 0, 0.9); }
+}
+#board .cell.selected {
+  animation: cellSelectPulse 1s ease-in-out infinite;
+}
+
+/* Подсветка клетки-цели */
+@keyframes cellTargetGlow {
+  0%, 100% { box-shadow: inset 0 0 0 2px rgba(80, 200, 255, 0.5); }
+  50%      { box-shadow: inset 0 0 10px 2px rgba(80, 200, 255, 0.9); }
+}
+#board .cell.target {
+  animation: cellTargetGlow 1.2s ease-in-out infinite;
+}
+
+/* Уважаем настройку «уменьшить движение» (для людей, кого укачивает) */
+@media (prefers-reduced-motion: reduce) {
+  #board .cell[data-mood],
+  #board .cell[data-mood] .cat,
+  #board .cell.selected,
+  #board .cell.target {
+    animation: none !important;
+  }
+}
