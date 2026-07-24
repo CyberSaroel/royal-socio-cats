@@ -3,6 +3,7 @@ const path = require('path');
 
 const versionFile = path.join(__dirname, '..', 'js', 'core', 'version.js');
 const indexFile = path.join(__dirname, '..', 'index.html');
+const swFile = path.join(__dirname, '..', 'sw.js');
 
 if (process.argv.length < 3) {
   console.error('Usage: node tools/bumpVersion.js <version>');
@@ -40,5 +41,11 @@ let indexContent = fs.readFileSync(indexFile, 'utf8');
 indexContent = indexContent.replace(/js\/app\.js\?v=[^"]*"/, `js/app.js?v=${newVersion}"`);
 fs.writeFileSync(indexFile, indexContent, 'utf8');
 console.log(`Updated index.html to version ${newVersion}`);
+
+// Update sw.js
+let swContent = fs.readFileSync(swFile, 'utf8');
+swContent = swContent.replace(/const VERSION = "[^"]*";/, `const VERSION = "${newVersion}";`);
+fs.writeFileSync(swFile, swContent, 'utf8');
+console.log(`Updated sw.js to version ${newVersion}`);
 
 console.log('Done!');
