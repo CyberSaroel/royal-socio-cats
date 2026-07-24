@@ -763,4 +763,9 @@ button {
   .stats-card > div:last-child {
     font-size: 1.2em;
   }
+
+  .kings-total-banner {
+    font-size: 15px;
+    padding: 8px 12px;
+  }
 }
