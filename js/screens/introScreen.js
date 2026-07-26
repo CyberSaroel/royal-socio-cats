@@ -4,9 +4,11 @@ import { showThemeSelect } from "./themeSelect.js";
 import { showStatsScreen } from "./statsScreen.js";
 import { audioManager, isMusicEnabled, setMusicEnabled, isSfxEnabled, setSfxEnabled, getMusicVolume, setMusicVolume, getSfxVolume, setSfxVolume } from "../core/audioManager.js";
 import NavigationService from "../core/navigation.js";
+import { removeFloatingAudioControls } from "../ui/floatingAudioControls.js";
 
 export function showIntroScreen(root) {
   root.innerHTML = "";
+  removeFloatingAudioControls();
 
   const overlay = document.createElement("div");
   overlay.id = "intro-screen";
