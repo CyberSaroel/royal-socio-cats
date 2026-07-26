@@ -379,7 +379,7 @@
   100% { transform: scale(1) rotateY(360deg); filter: brightness(1); }
 }
 #board .cell .cat.mood-change {
-  animation: moodChange 1.2s ease-out !important;
+  animation: moodChange 0.3s ease-out !important;
   z-index: 6;
 }
 
