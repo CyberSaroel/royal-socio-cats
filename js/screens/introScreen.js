@@ -53,16 +53,6 @@ export function showIntroScreen(root) {
     NavigationService.navigate("themeSelect", () => showThemeSelect(root));
   });
 
-  // Stats button
-  const statsBtn = document.createElement("button");
-  statsBtn.className = "intro-music-btn";
-  statsBtn.textContent = "📊 Статистика";
-  statsBtn.addEventListener("click", () => {
-    audioManager.initAudioContext();
-    audioManager.playSoundEffect("assets/sounds/click.mp3");
-    NavigationService.navigate("stats", () => showStatsScreen(root));
-  });
-
   // Wrapper for music controls
   const musicWrapper = document.createElement("div");
   musicWrapper.style.position = "relative";
@@ -174,7 +164,6 @@ export function showIntroScreen(root) {
   controls.appendChild(startBtn);
   controls.appendChild(rulesBtn);
   controls.appendChild(themeBtn);
-  controls.appendChild(statsBtn);
   controls.appendChild(musicWrapper);
 
   // Wrapper for SFX controls
