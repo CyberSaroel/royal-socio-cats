@@ -325,15 +325,6 @@
   animation: cellTargetGlow 1.2s ease-in-out infinite;
 }
 
-/* Уважаем настройку «уменьшить движение» (для людей, кого укачивает) */
-@media (prefers-reduced-motion: reduce) {
-  #board .cell[data-mood],
-  #board .cell.selected,
-  #board .cell.target {
-    animation: none !important;
-  }
-}
-
 /* ===== Ракета: показываем куда прибавилось + полёт (вау) ===== */
 .boost-float {
   position: fixed;
@@ -399,15 +390,6 @@
 #board .cell .cat.mood-change {
   animation: moodChange 0.6s ease-out !important;
   z-index: 6;
-}
-@media (prefers-reduced-motion: reduce) {
-  .boost-float,
-  .boost-glow,
-  .rocket-fly-big,
-  #board .cell .cat.cat-land,
-  #board .cell .cat.mood-change {
-    animation: none !important;
-  }
 }
 
 /* Мобильная версия: кнопка "Ракеты" — размером с окошки-счётчики рядом */
