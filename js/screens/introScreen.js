@@ -5,6 +5,7 @@ import { showStatsScreen } from "./statsScreen.js";
 import { audioManager, isMusicEnabled, setMusicEnabled, isSfxEnabled, setSfxEnabled, getMusicVolume, setMusicVolume, getSfxVolume, setSfxVolume } from "../core/audioManager.js";
 import NavigationService from "../core/navigation.js";
 import { removeFloatingAudioControls } from "../ui/floatingAudioControls.js";
+import { toggleThemeScheme, getThemeScheme } from "../theme.js";
 
 export function showIntroScreen(root) {
   root.innerHTML = "";
@@ -51,6 +52,21 @@ export function showIntroScreen(root) {
     audioManager.initAudioContext();
     audioManager.playSoundEffect("assets/sounds/click.mp3");
     NavigationService.navigate("settings", () => showSettingsScreen(root));
+  });
+
+  // Theme scheme toggle button (dark/light)
+  const themeToggleBtn = document.createElement("button");
+  themeToggleBtn.className = "intro-music-btn";
+  const updateThemeToggleLabel = () => {
+    themeToggleBtn.textContent = getThemeScheme() === "dark" ? "🌙 Тема: Тёмная" : "☀️ Тема: Светлая";
+  };
+  updateThemeToggleLabel();
+  themeToggleBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    audioManager.initAudioContext();
+    audioManager.playSoundEffect("assets/sounds/click.mp3");
+    toggleThemeScheme();
+    updateThemeToggleLabel();
   });
 
   // Wrapper for music controls
@@ -164,6 +180,7 @@ export function showIntroScreen(root) {
   controls.appendChild(startBtn);
   controls.appendChild(rulesBtn);
   controls.appendChild(settingsBtn);
+  controls.appendChild(themeToggleBtn);
   controls.appendChild(musicWrapper);
 
   // Wrapper for SFX controls
