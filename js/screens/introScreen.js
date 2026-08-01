@@ -5,7 +5,7 @@ import { showStatsScreen } from "./statsScreen.js";
 import { audioManager, isMusicEnabled, setMusicEnabled, isSfxEnabled, setSfxEnabled, getMusicVolume, setMusicVolume, getSfxVolume, setSfxVolume } from "../core/audioManager.js";
 import NavigationService from "../core/navigation.js";
 import { removeFloatingAudioControls } from "../ui/floatingAudioControls.js";
-import { toggleThemeScheme, getThemeScheme } from "../theme.js";
+import { toggleThemeScheme } from "../theme.js";
 
 export function showIntroScreen(root) {
   root.innerHTML = "";
@@ -56,17 +56,36 @@ export function showIntroScreen(root) {
 
   // Theme scheme toggle button (dark/light)
   const themeToggleBtn = document.createElement("button");
-  themeToggleBtn.className = "intro-music-btn";
-  const updateThemeToggleLabel = () => {
-    themeToggleBtn.textContent = getThemeScheme() === "dark" ? "🌙 Тема: Тёмная" : "☀️ Тема: Светлая";
+  themeToggleBtn.className = "intro-music-btn theme-toggle-btn";
+
+  const themeSwatch = document.createElement("span");
+  themeSwatch.className = "theme-toggle-swatch";
+  const themeIcon = document.createElement("span");
+  themeIcon.className = "theme-toggle-icon";
+  const themeText = document.createElement("span");
+  themeText.className = "theme-toggle-text";
+
+  const refreshThemeButton = () => {
+    const cur = document.documentElement.getAttribute("data-theme") || "light";
+    const isDark = cur === "dark";
+    themeSwatch.style.backgroundColor = isDark ? "#0a0a14" : "#f0e6d2";
+    themeIcon.textContent = isDark ? "☾" : "☀";
+    themeText.textContent = isDark ? "Тема: Тёмная" : "Тема: Светлая";
   };
-  updateThemeToggleLabel();
+  refreshThemeButton();
+
+  themeToggleBtn.appendChild(themeSwatch);
+  themeToggleBtn.appendChild(themeIcon);
+  themeToggleBtn.appendChild(themeText);
+
   themeToggleBtn.addEventListener("click", (e) => {
     e.stopPropagation();
     audioManager.initAudioContext();
     audioManager.playSoundEffect("assets/sounds/click.mp3");
+    themeToggleBtn.classList.add("theme-toggle-flip");
+    setTimeout(() => themeToggleBtn.classList.remove("theme-toggle-flip"), 350);
     toggleThemeScheme();
-    updateThemeToggleLabel();
+    refreshThemeButton();
   });
 
   // Wrapper for music controls

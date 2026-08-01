@@ -18,9 +18,9 @@ export function setThemeScheme(name) {
 export function getThemeScheme() {
   try {
     const saved = localStorage.getItem(THEME_SCHEME_KEY);
-    return saved === "light" ? "light" : "dark";
+    return saved === "dark" ? "dark" : "light";
   } catch (e) {
-    return "dark";
+    return "light";
   }
 }
 
