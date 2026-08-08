@@ -1,0 +1,10 @@
+{
+  "name": "royal-socio-cats",
+  "version": "1.0.0",
+  "description": "Королевский котопарк — игра про котов и соционику",
+  "license": "ISC",
+  "dependencies": {
+    "ffmpeg-static": "^5.2.0",
+    "fluent-ffmpeg": "^2.1.3"
+  }
+}
