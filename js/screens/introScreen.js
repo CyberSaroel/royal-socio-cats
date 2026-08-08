@@ -16,7 +16,7 @@ export function showIntroScreen(root) {
 
   const introImg = document.createElement("img");
   introImg.src = "assets/intro/intro.png";
-  introImg.alt = "Соционические коты";
+  introImg.alt = "Соционические коты: Королевский Котопарк";
   introImg.className = "intro-image";
 
   // Заголовок "СОБЕРИ ВСЕХ КОРОЛЕЙ"

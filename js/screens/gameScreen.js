@@ -350,21 +350,20 @@ export async function showGameScreen(root, levelId) {
     }
   }
 
-  let rocketBtnDisabled = false;
   let kingsThisLevelAtWin = 0;
+  let lastRocketPointerTime = 0;
 
-  // Нажатие ракеты. Слушатель ниже вешаем ОДИН раз на блок статистики,
-  // поэтому кнопка срабатывает с первого раза, даже когда счётчики перерисовываются.
+  // Нажатие ракеты. Используем pointerdown (мгновенно, до того как таймер пересоздаст кнопку),
+  // а click оставляем как fallback для клавиатуры. Повторный click в течение 500 мс
+  // после pointerdown игнорируем, чтобы не потратить ракету дважды за одно нажатие.
   function useRocket() {
-    if (won || impeached || rocketBtnDisabled) return;
+    if (won || impeached) return;
     if (!spendRocket()) return;
     audioManager.initAudioContext();
     audioManager.playSoundEffect("assets/sounds/click.mp3");
     remainingMoves += 10;
     countdown.addTime(20_000);
     remainingMs = countdown.remainingMs;
-    rocketBtnDisabled = true;
-    trackedSetTimeout(() => { rocketBtnDisabled = false; updateStats(); }, 500);
     updateStats();       // сперва обновляем цифры
     showRocketBoost();   // потом показываем поверх: куда прибавилось + полёт ракеты
   }
@@ -407,8 +406,22 @@ export async function showGameScreen(root, levelId) {
   }
 
   // Один слушатель на весь блок статистики — переживает перерисовку кнопки.
+  // pointerdown срабатывает мгновенно, даже если кнопка будет пересоздана
+  // таймером (updateStats вызывается каждые 200 мс и перезаписывает innerHTML).
+  stats.addEventListener("pointerdown", (e) => {
+    // Только основная кнопка мыши / касание.
+    if (e.button !== undefined && e.button !== 0) return;
+    if (e.target.closest("#rocket-btn")) {
+      lastRocketPointerTime = Date.now();
+      useRocket();
+    }
+  });
+  // click — fallback для активации с клавиатуры (Enter/Space),
+  // не создаёт двойное срабатывание после pointerdown.
   stats.addEventListener("click", (e) => {
-    if (e.target.closest("#rocket-btn")) useRocket();
+    if (e.target.closest("#rocket-btn")) {
+      if (Date.now() - lastRocketPointerTime > 500) useRocket();
+    }
   });
 
   function updateStats() {
@@ -472,7 +485,7 @@ export async function showGameScreen(root, levelId) {
     const remainingMovesHtml = `<span style="${movesColor}">${remainingMoves}</span>`;
     const kingsCount = won ? kingsThisLevelAtWin : getKingsThisLevel();
     const rocketsCount = getRockets();
-    const canUseRocket = !rocketBtnDisabled && rocketsCount > 0 && !won && !impeached;
+    const canUseRocket = rocketsCount > 0 && !won && !impeached;
     const rocketBtnClass = `rocket-btn ${!canUseRocket ? 'rocket-btn-disabled' : ''}`;
     stats.innerHTML = compact ? `
       <div class="container-fluid px-0">
