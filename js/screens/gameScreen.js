@@ -353,9 +353,9 @@ export async function showGameScreen(root, levelId) {
   let kingsThisLevelAtWin = 0;
   let lastRocketPointerTime = 0;
 
-  // Нажатие ракеты. Используем pointerdown (мгновенно, до того как таймер пересоздаст кнопку),
+  // Нажатие рыбки. Используем pointerdown (мгновенно, до того как таймер пересоздаст кнопку),
   // а click оставляем как fallback для клавиатуры. Повторный click в течение 500 мс
-  // после pointerdown игнорируем, чтобы не потратить ракету дважды за одно нажатие.
+  // после pointerdown игнорируем, чтобы не потратить рыбку дважды за одно нажатие.
   function useRocket() {
     if (won || impeached) return;
     if (!spendRocket()) return;
@@ -365,17 +365,17 @@ export async function showGameScreen(root, levelId) {
     countdown.addTime(20_000);
     remainingMs = countdown.remainingMs;
     updateStats();       // сперва обновляем цифры
-    showRocketBoost();   // потом показываем поверх: куда прибавилось + полёт ракеты
+    showRocketBoost();   // потом показываем поверх: куда прибавилось + полёт рыбки
   }
 
-  // Показываем, КУДА прибавились цифры (надпись + подсветка над счётчиком) и запускаем ракету.
+  // Показываем, КУДА прибавились цифры (надпись + подсветка над счётчиком) и запускаем рыбку.
   function showRocketBoost() {
     const items = Array.from(stats.querySelectorAll(".stat-item"));
     const find = (word) => items.find((el) => el.textContent.includes(word));
     const targets = [
       { el: find("Ходы"),   text: "+10 ходов" },
       { el: find("Время"),  text: "+20 сек" },
-      { el: find("Ракеты"), text: "-1 🚀" },
+      { el: find("Рыбки"), text: "-1 🐟" },
     ];
     for (const t of targets) {
       if (!t.el) continue;
@@ -398,7 +398,7 @@ export async function showGameScreen(root, levelId) {
     }
     const rocket = document.createElement("div");
     rocket.className = "rocket-fly-big";
-    rocket.textContent = "🚀";
+    rocket.textContent = "🐟";
     boardArea.appendChild(rocket);
     rocket.addEventListener("animationend", () => rocket.remove());
     boardArea.classList.add("screen-shake");
@@ -497,7 +497,7 @@ export async function showGameScreen(root, levelId) {
           <div class="col-6 col-sm-4 col-md-3 col-lg-2"><div class="stat-item">🎯 Ходы: ${remainingMovesHtml}|${movesMade}</div></div>
           <div class="col-6 col-sm-4 col-md-3 col-lg-2"><div class="stat-item">⭐ Макс. довольных: ${maxHappyCats}</div></div>
           <div class="col-6 col-sm-4 col-md-3 col-lg-2"><div class="stat-item">👑 Короли: ${kingsCount}</div></div>
-          <div class="col-6 col-sm-4 col-md-3 col-lg-2"><button class="${rocketBtnClass}" id="rocket-btn" ${!canUseRocket ? 'disabled' : ''}>🚀 Ракеты: ${rocketsCount}</button></div>
+          <div class="col-6 col-sm-4 col-md-3 col-lg-2"><button class="${rocketBtnClass}" id="rocket-btn" ${!canUseRocket ? 'disabled' : ''}>🐟 Рыбки: ${rocketsCount}</button></div>
         </div>
       </div>
     ` : `
@@ -508,9 +508,9 @@ export async function showGameScreen(root, levelId) {
       <div class="stat-item">😾 Недовольные: ${unhappy}</div>
       <div class="stat-item">⭐ Макс. довольных: ${maxHappyCats}</div>
       <div class="stat-item">👑 Короли: ${kingsCount}</div>
-      <button class="${rocketBtnClass}" id="rocket-btn" ${!canUseRocket ? 'disabled' : ''}>🚀 Ракеты: ${rocketsCount}</button>
+      <button class="${rocketBtnClass}" id="rocket-btn" ${!canUseRocket ? 'disabled' : ''}>🐟 Рыбки: ${rocketsCount}</button>
     `;
-    // Кнопку ракеты теперь обрабатывает useRocket (делегированный слушатель выше).
+    // Кнопку рыбки теперь обрабатывает useRocket (делегированный слушатель выше).
     refitBoard();
     positionStats();
   }
