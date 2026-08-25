@@ -98,7 +98,7 @@ export function showRulesScreen(root) {
     <p>После успешного прохождения уровня:</p>
     <ul>
       <li>👑 все полученные короли засчитываются в общую статистику; 👑</li>
-      <li>🐟 за каждого короля начисляется одна рыбка. 🐟</li>
+      <li><img class="fish-icon" src="assets/icons/fish.png" alt=""> за каждого короля начисляется одна рыбка. <img class="fish-icon" src="assets/icons/fish.png" alt=""></li>
     </ul>
     <p>Рыбки можно использовать на любом следующем уровне.</p>
     <p>Одна рыбка даёт:</p>

@@ -361,6 +361,15 @@
   15%  { opacity: 1; }
   100% { opacity: 0; transform: translate(220px, -260px) rotate(35deg) scale(1.2); }
 }
+/* Иконка рыбки: картинка вместо эмодзи — высота как у эмодзи (1em от текущего шрифта) */
+.fish-icon {
+  height: 1em;
+  width: auto;
+  vertical-align: middle;
+  display: inline-block;
+  margin: 0 0.1em;
+}
+
 
 /* ===== Коты: приземление после хода и превращение при смене настроения ===== */
 @keyframes catLand {

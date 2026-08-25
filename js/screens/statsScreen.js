@@ -30,7 +30,7 @@ export function showStatsScreen(root) {
 
   const statCards = [
     { label: "👑 Королей всего", value: kingsTotal },
-    { label: "🐟 Рыбок сейчас", value: rockets },
+    { label: '<img class="fish-icon" src="assets/icons/fish.png" alt=""> Рыбок сейчас', value: rockets },
     { label: "✅ Пройдено уровней", value: levelsDone },
     { label: "🏅 Рекорд королей за уровень", value: bestKings }
   ];
