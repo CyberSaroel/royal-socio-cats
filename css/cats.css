@@ -361,10 +361,10 @@
   15%  { opacity: 1; }
   100% { opacity: 0; transform: translate(220px, -260px) rotate(35deg) scale(1.2); }
 }
-/* Иконка рыбки: картинка вместо эмодзи — высота как у эмодзи (1em от текущего шрифта) */
+/* Иконка рыбки: картинка вместо эмодзи — удлинена по горизонтали в 1.5 раза (высота та же, что при ширине auto) */
 .fish-icon {
   height: 1em;
-  width: auto;
+  width: calc(1em * 130 / 73 * 1.5);
   vertical-align: middle;
   display: inline-block;
   margin: 0 0.1em;
